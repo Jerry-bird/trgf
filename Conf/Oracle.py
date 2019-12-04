@@ -9,7 +9,8 @@ instance = 'vellgo'
 
 
 class Oracle(object):
-    """  oracle db operator  """
+
+    # 对oracle操作
 
     def __init__(self):
         self._conn = cx_Oracle.connect("%s/%s@%s/%s" % (userName, password, host, instance))
@@ -36,6 +37,7 @@ class Oracle(object):
 
     def queryOne(self, sql):
         self.cursor.execute(sql)
+        self._conn.commit()
         return self.cursor.fetchone()
 
     def queryBy(self, sql, nameParams={}):
@@ -45,6 +47,10 @@ class Oracle(object):
             self.cursor.execute(sql)
 
         return self.cursor.fetchall()
+
+    def query(self, sql):
+        self.cursor.execute(sql)
+        self._conn.commit()
 
     def insertBatch(self, sql, nameParams=[]):
         """batch insert much rows one time,use location parameter"""

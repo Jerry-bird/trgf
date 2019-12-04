@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/Lib/generate_award.py" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/Lib/get_agent.py" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/MainInterface/front/cart_insert.py" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/MainInterface/front/order_delay.py" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/MainInterface/front/order_send.py" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/MainInterface/front/put_price_cart.py" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/MainInterface/front/send_sms.py" dialect="MySQL" />
+  </component>
+</project>

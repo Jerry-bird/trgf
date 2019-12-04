@@ -6,17 +6,16 @@ from Conf import getpathInfo
 
 path = getpathInfo.get_path()
 
-#print(path)
-
 
 class readExcel():
     def get_xls(self, xls_name, sheet_name):
         cls = []
         xlspath = os.path.join(path, 'excel', xls_name)
-        #print(xlspath)
+        # print(xlspath)
         file = open_workbook(xlspath)
         sheet = file.sheet_by_name(sheet_name)
         nrows = sheet.nrows
+        print(path)
         for i in range(nrows):
             if sheet.row_values(i)[0] != u'case_name':
                 cls.append(sheet.row_values(i))

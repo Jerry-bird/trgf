@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>自动化测试用例</title>
+    <meta name="generator" content="HTMLTestRunner 0.9.1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js"></script>
+    <!-- <script type="text/javascript" src="js/echarts.common.min.js"></script> -->
+    
+    
+<style type="text/css" media="screen">
+    body        { font-family: Microsoft YaHei,Consolas,arial,sans-serif; font-size: 80%; }
+    table       { font-size: 100%; }
+    pre         { white-space: pre-wrap;word-wrap: break-word; }
+
+    /* -- heading ---------------------------------------------------------------------- */
+    h1 {
+        font-size: 16pt;
+        color: gray;
+    }
+    .heading {
+        margin-top: 0ex;
+        margin-bottom: 1ex;
+    }
+
+    .heading .attribute {
+        margin-top: 1ex;
+        margin-bottom: 0;
+    }
+
+    .heading .description {
+        margin-top: 2ex;
+        margin-bottom: 3ex;
+    }
+
+    /* -- css div popup ------------------------------------------------------------------------ */
+    a.popup_link {
+    }
+
+    a.popup_link:hover {
+        color: red;
+    }
+
+    .popup_window {
+        display: none;
+        position: relative;
+        left: 0px;
+        top: 0px;
+        /*border: solid #627173 1px; */
+        padding: 10px;
+        /*background-color: #E6E6D6; */
+        font-family: "Lucida Console", "Courier New", Courier, monospace;
+        text-align: left;
+        font-size: 8pt;
+        /* width: 500px;*/
+    }
+
+    }
+    /* -- report ------------------------------------------------------------------------ */
+    #show_detail_line {
+        margin-top: 3ex;
+        margin-bottom: 1ex;
+    }
+    #result_table {
+        width: 99%;
+    }
+    #header_row {
+        font-weight: bold;
+        color: #303641;
+        background-color: #ebebeb;
+    }
+    #total_row  { font-weight: bold; }
+    .passClass  { background-color: #bdedbc; }
+    .failClass  { background-color: #ffefa4; }
+    .errorClass { background-color: #ffc9c9; }
+    .passCase   { color: #6c6; }
+    .failCase   { color: #FF6600; font-weight: bold; }
+    .errorCase  { color: #c00; font-weight: bold; }
+    .hiddenRow  { display: none; }
+    .testcase   { margin-left: 2em; }
+
+
+    /* -- ending ---------------------------------------------------------------------- */
+    #ending {
+    }
+
+    #div_base {
+                position:absolute;
+                top:0%;
+                left:5%;
+                right:5%;
+                width: auto;
+                height: auto;
+                margin: -15px 0 0 0;
+    }
+</style>
+
+    
+</head>
+<body>
+    <script language="javascript" type="text/javascript"><!--
+    output_list = Array();
+
+    /* level - 0:Summary; 1:Failed; 2:All */
+    function showCase(level) {
+        trs = document.getElementsByTagName("tr");
+        for (var i = 0; i < trs.length; i++) {
+            tr = trs[i];
+            id = tr.id;
+            if (id.substr(0,2) == 'ft') {
+                if (level < 1) {
+                    tr.className = 'hiddenRow';
+                }
+                else {
+                    tr.className = '';
+                }
+            }
+            if (id.substr(0,2) == 'pt') {
+                if (level > 1) {
+                    tr.className = '';
+                }
+                else {
+                    tr.className = 'hiddenRow';
+                }
+            }
+        }
+    }
+
+
+    function showClassDetail(cid, count) {
+        var id_list = Array(count);
+        var toHide = 1;
+        for (var i = 0; i < count; i++) {
+            tid0 = 't' + cid.substr(1) + '.' + (i+1);
+            tid = 'f' + tid0;
+            tr = document.getElementById(tid);
+            if (!tr) {
+                tid = 'p' + tid0;
+                tr = document.getElementById(tid);
+            }
+            id_list[i] = tid;
+            if (tr.className) {
+                toHide = 0;
+            }
+        }
+        for (var i = 0; i < count; i++) {
+            tid = id_list[i];
+            if (toHide) {
+                document.getElementById('div_'+tid).style.display = 'none'
+                document.getElementById(tid).className = 'hiddenRow';
+            }
+            else {
+                document.getElementById(tid).className = '';
+            }
+        }
+    }
+
+
+    function showTestDetail(div_id){
+        var details_div = document.getElementById(div_id)
+        var displayState = details_div.style.display
+        // alert(displayState)
+        if (displayState != 'block' ) {
+            displayState = 'block'
+            details_div.style.display = 'block'
+        }
+        else {
+            details_div.style.display = 'none'
+        }
+    }
+
+
+    function html_escape(s) {
+        s = s.replace(/&/g,'&amp;');
+        s = s.replace(/</g,'&lt;');
+        s = s.replace(/>/g,'&gt;');
+        return s;
+    }
+
+    /* obsoleted by detail in <div>
+    function showOutput(id, name) {
+        var w = window.open("", //url
+                        name,
+                        "resizable,scrollbars,status,width=800,height=450");
+        d = w.document;
+        d.write("<pre>");
+        d.write(html_escape(output_list[id]));
+        d.write("\n");
+        d.write("<a href='javascript:window.close()'>close</a>\n");
+        d.write("</pre>\n");
+        d.close();
+    }
+    */
+    --></script>
+
+    <div id="div_base">
+        
+    <div class='page-header'>
+        <h1>自动化测试用例</h1>
+    <p class='attribute'><strong>开始时间:</strong> 2019-11-11 23:26:51</p>
+<p class='attribute'><strong>运行时长:</strong> 0:00:32.560159</p>
+<p class='attribute'><strong>状态:</strong> 通过 31 失败 3 错误 8</p>
+
+    </div>
+    <div style="float: left;width:50%;"><p class='description'>用例执行情况</p></div>
+    <div id="chart" style="width:50%;height:400px;float:left;"></div>
+
+        
+    <div class="btn-group btn-group-sm">
+        <button class="btn btn-default" onclick='javascript:showCase(0)'>总结</button>
+        <button class="btn btn-default" onclick='javascript:showCase(1)'>失败</button>
+        <button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>
+    </div>
+    <p></p>
+    <table id='result_table' class="table table-bordered">
+        <colgroup>
+            <col align='left' />
+            <col align='right' />
+            <col align='right' />
+            <col align='right' />
+            <col align='right' />
+            <col align='right' />
+        </colgroup>
+        <tr id='header_row'>
+            <td>测试套件/测试用例</td>
+            <td>总数</td>
+            <td>通过</td>
+            <td>失败</td>
+            <td>错误</td>
+            <td>查看</td>
+        </tr>
+        
+    <tr class='passClass'>
+        <td>active_payed_coupon.ActivePayedCoupon</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c1',1)">详情</a></td>
+    </tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_active_payed_coupon</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>address_isdefault.AddressDefault</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c2',1)">详情</a></td>
+    </tr>
+
+<tr id='pt2.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_address_default</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.1')" >
+        通过</a>
+
+    <div id='div_pt2.1' class="popup_window">
+        <pre>pt2.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>MainInterface.get_info.GetInfo</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c3',1)">详情</a></td>
+    </tr>
+
+<tr id='pt3.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_get_info</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>advertisement_list.AdvertisementList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c4',1)">详情</a></td>
+    </tr>
+
+<tr id='pt4.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_advertisement_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>assist_myself_list.AssistMyselfList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c5',1)">详情</a></td>
+    </tr>
+
+<tr id='pt5.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_assist_myself_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>cart_list.CartList</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c6',1)">详情</a></td>
+    </tr>
+
+<tr id='ft6.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_cart_list</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft6.1')" >
+        错误</a>
+
+    <div id='div_ft6.1' class="popup_window">
+        <pre>ft6.1: Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\cart_list.py", line 20, in test_cart_list
+    lists = oraDb.queryBy(sql, {'con_id': con_id})[0][0]
+IndexError: list index out of range
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>cart_sum.CartSum</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c7',1)">详情</a></td>
+    </tr>
+
+<tr id='pt7.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_cart_sum</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>confirm_check.ConfirmCheck</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c8',1)">详情</a></td>
+    </tr>
+
+<tr id='pt8.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confirm_check</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>MainInterface.index_all_list.GetList</td>
+        <td>8</td>
+        <td>8</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c9',8)">详情</a></td>
+    </tr>
+
+<tr id='pt9.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt9.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>confirm_query_quick.ConfirmQuery</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c10',1)">详情</a></td>
+    </tr>
+
+<tr id='pt10.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confirm_query_quick</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='failClass'>
+        <td>count_product_review.CountProductReview</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c11',1)">详情</a></td>
+    </tr>
+
+<tr id='ft11.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_count_product_review</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft11.1')" >
+        失败</a>
+
+    <div id='div_ft11.1' class="popup_window">
+        <pre>ft11.1: Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\count_product_review.py", line 24, in test_count_product_review
+    self.assertEqual(msg2, lists)
+AssertionError: 25 != 0
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>coupon_homepage_list.CouponHomepageList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c12',1)">详情</a></td>
+    </tr>
+
+<tr id='pt12.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_coupon_homepage_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>coupon_listbystatus.CouponListByStatus</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c13',1)">详情</a></td>
+    </tr>
+
+<tr id='pt13.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_coupon_list_by_status</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>get_config_list.ConfigList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c14',1)">详情</a></td>
+    </tr>
+
+<tr id='pt14.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_get_config_list</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt14.1')" >
+        通过</a>
+
+    <div id='div_pt14.1' class="popup_window">
+        <pre>pt14.1: 成功
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>MainInterface.address_isdefault.AddressDefault</td>
+        <td>4</td>
+        <td>4</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c15',4)">详情</a></td>
+    </tr>
+
+<tr id='pt15.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_address_default</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.1')" >
+        通过</a>
+
+    <div id='div_pt15.1' class="popup_window">
+        <pre>pt15.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_address_default</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.2')" >
+        通过</a>
+
+    <div id='div_pt15.2' class="popup_window">
+        <pre>pt15.2: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_address_default</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.3')" >
+        通过</a>
+
+    <div id='div_pt15.3' class="popup_window">
+        <pre>pt15.3: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_address_default</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.4')" >
+        通过</a>
+
+    <div id='div_pt15.4' class="popup_window">
+        <pre>pt15.4: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>get_info.GetInfo</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c16',1)">详情</a></td>
+    </tr>
+
+<tr id='pt16.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_get_info</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>index_all_list.GetList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c17',1)">详情</a></td>
+    </tr>
+
+<tr id='pt17.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_list</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>index_detail_new.IndexDetailNew</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c18',1)">详情</a></td>
+    </tr>
+
+<tr id='pt18.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index_detail_new</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='passClass'>
+        <td>operation_list.GetOperationList</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c19',1)">详情</a></td>
+    </tr>
+
+<tr id='pt19.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_get_operation_list</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt19.1')" >
+        通过</a>
+
+    <div id='div_pt19.1' class="popup_window">
+        <pre>pt19.1: 成功
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>order_check_add.OrderCheckAdd</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c20',1)">详情</a></td>
+    </tr>
+
+<tr id='pt20.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_order_check_add</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>unittest.loader._FailedTest</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c21',1)">详情</a></td>
+    </tr>
+
+<tr id='ft21.1' class='none'>
+    <td class='errorCase'><div class='testcase'>order_info</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft21.1')" >
+        错误</a>
+
+    <div id='div_ft21.1' class="popup_window">
+        <pre>ft21.1: ImportError: Failed to import test module: order_info
+Traceback (most recent call last):
+  File "D:\python3\lib\unittest\loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "D:\python3\lib\unittest\loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_info.py", line 13, in &lt;module&gt;
+    orderId = OrderPut().test_order_put()[0]
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\put_price.py", line 67, in test_put_price
+    self.assertEqual(payableAmount, payableAmount_test)
+  File "D:\python3\lib\unittest\case.py", line 852, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "D:\python3\lib\unittest\case.py", line 845, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: 0.0 != 0.8
+
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='failClass'>
+        <td>order_put.OrderPut</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c22',1)">详情</a></td>
+    </tr>
+
+<tr id='ft22.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_order_put</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft22.1')" >
+        失败</a>
+
+    <div id='div_ft22.1' class="popup_window">
+        <pre>ft22.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\put_price.py", line 67, in test_put_price
+    self.assertEqual(payableAmount, payableAmount_test)
+AssertionError: 0.2 != 0.8
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>MainInterface.order_put_freight.OrderPutFreight</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c23',1)">详情</a></td>
+    </tr>
+
+<tr id='ft23.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_order_put_freight</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft23.1')" >
+        错误</a>
+
+    <div id='div_ft23.1' class="popup_window">
+        <pre>ft23.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='failClass'>
+        <td>MainInterface.put_price.PutPrice</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c24',1)">详情</a></td>
+    </tr>
+
+<tr id='ft24.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_put_price</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft24.1')" >
+        失败</a>
+
+    <div id='div_ft24.1' class="popup_window">
+        <pre>ft24.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\put_price.py", line 67, in test_put_price
+    self.assertEqual(payableAmount, payableAmount_test)
+AssertionError: 0.2 != 0.8
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>MainInterface.confirm_query_quick.ConfirmQuery</td>
+        <td>2</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c25',2)">详情</a></td>
+    </tr>
+
+<tr id='pt25.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confirm_query_quick</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+<tr id='pt25.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confirm_query_quick</div></td>
+    <td colspan='5' align='center'>通过</td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>order_put_freight.OrderPutFreight</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c26',1)">详情</a></td>
+    </tr>
+
+<tr id='ft26.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_order_put_freight</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft26.1')" >
+        错误</a>
+
+    <div id='div_ft26.1' class="popup_window">
+        <pre>ft26.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>MainInterface.order_put.OrderPut</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td>2</td>
+        <td><a href="javascript:showClassDetail('c27',2)">详情</a></td>
+    </tr>
+
+<tr id='ft27.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_order_put</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft27.1')" >
+        错误</a>
+
+    <div id='div_ft27.1' class="popup_window">
+        <pre>ft27.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft27.2' class='none'>
+    <td class='errorCase'><div class='testcase'>test_order_put</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft27.2')" >
+        错误</a>
+
+    <div id='div_ft27.2' class="popup_window">
+        <pre>ft27.2: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>orders_savepay.OrdersSavePay</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c28',1)">详情</a></td>
+    </tr>
+
+<tr id='ft28.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_orders_savepay</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft28.1')" >
+        错误</a>
+
+    <div id='div_ft28.1' class="popup_window">
+        <pre>ft28.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\orders_savepay.py", line 16, in test_orders_savepay
+    orderId = OrderPut().test_order_put()[0]
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='errorClass'>
+        <td>pay_topay.PayToPay</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td><a href="javascript:showClassDetail('c29',1)">详情</a></td>
+    </tr>
+
+<tr id='ft29.1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_pay_to_pay</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft29.1')" >
+        错误</a>
+
+    <div id='div_ft29.1' class="popup_window">
+        <pre>ft29.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+0.00 6.50
+Traceback (most recent call last):
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\pay_topay.py", line 16, in test_pay_to_pay
+    orderId = OrderPut().test_order_put()[0]
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put.py", line 30, in test_order_put
+    orderTotal_test = float(PutPrice().test_put_price()) + float(OrderPutFreight().test_order_put_freight()[0])
+  File "C:\Users\lp403\PycharmProjects\trgf\MainInterface\order_put_freight.py", line 41, in test_order_put_freight
+    freight_mysql = float('%.2f' % (GetFreight().get_freight()[0]))
+TypeError: 'NoneType' object is not subscriptable
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+    <tr class='passClass'>
+        <td>put_price.PutPrice</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td><a href="javascript:showClassDetail('c30',1)">详情</a></td>
+    </tr>
+
+<tr id='pt30.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_put_price</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt30.1')" >
+        通过</a>
+
+    <div id='div_pt30.1' class="popup_window">
+        <pre>pt30.1: ((332652868559454208, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '芯城科技园2栋1406', '13999999999', '测试', 1, 1, 'user', datetime.datetime(2019, 10, 25, 16, 21, 17), 'user', datetime.datetime(2019, 11, 11, 20, 43, 18), None), (332653348232642560, '7edd26fe79bc4944a4c991fa218d7f4d', '260053555', 430000, '湖南', 430100, '长沙', 430104, '岳麓', '测试', '13974936933', '在家', 1, 0, 'user', datetime.datetime(2019, 10, 25, 16, 23, 11), 'user', datetime.datetime(2019, 10, 25, 16, 37, 42), None))
+</pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+        <tr id='total_row'>
+            <td>总计</td>
+            <td>42</td>
+            <td>31</td>
+            <td>3</td>
+            <td>8</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+
+        <div id='ending'>&nbsp;</div>
+        
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '测试执行情况',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            color: ['#95b75d', 'grey', '#b64645'],
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['通过','失败','错误']
+            },
+            series : [
+                {
+                    name: '测试执行情况',
+                    type: 'pie',
+                    radius : '60%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:31, name:'通过'},
+                        {value:3, name:'失败'},
+                        {value:8, name:'错误'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    
+    </div>
+</body>
+</html>

@@ -39,6 +39,7 @@ class Mysql(object):
 
     def queryOne(self, sql):
         self.cursor.execute(sql)
+        self._conn.commit()
         return self.cursor.fetchone()
 
     def queryBy(self, sql, nameParams={}):
