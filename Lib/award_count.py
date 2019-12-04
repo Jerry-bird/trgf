@@ -69,7 +69,7 @@ class AwardCount(unittest.TestCase):
                     # print(list2)
             for i in range(0, len(list2), len(percent_list_new_all[1])):
                 list3.append(list2[i:i + len(percent_list_new_all[1])])
-            print(list3)
+            # print(list3)
         else:
             for i in range(len(repercent_list_new_all)):
                 for s in range(len(repercent_list_new_all[i])):
@@ -79,7 +79,7 @@ class AwardCount(unittest.TestCase):
                     # print(list2)
             for i in range(0, len(list2), len(repercent_list_new_all[1])):
                 list3.append(list2[i:i + len(repercent_list_new_all[1])])
-            print(list3)
+            # print(list3)
         award = 0
         for i in range(len(list3)):
             award = award + np.array(list3[i])
