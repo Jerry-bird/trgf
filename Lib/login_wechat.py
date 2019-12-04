@@ -4,6 +4,7 @@ import unittest
 import requests
 import jsonpath as jsonpath
 
+from Conf.url import url_login_wechat
 from MainExecute.readConfig import ReadConfig
 
 from DataSource.readExcel import readExcel
@@ -15,7 +16,7 @@ openid = xls_info[1][0]
 unionid = xls_info[1][1]
 # print(unionid)
 
-url = ReadConfig().get_http('baseurl') + '/ms-auth/auth/app/login/wechat'
+url = url_login_wechat
 # print(url)
 data = {"openidApp": openid, "unionid": unionid}
 headerP = {"version": "3.2.0", "mobileBrand": "IOS", "anonymousId": "6E7B9681-F967-4728-8303-DA04C16A253B"}

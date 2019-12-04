@@ -17,6 +17,10 @@ class ReadConfig:
         value = config.get('HTTP', name)
         return value
 
+    def get_con(self, name):
+        conNo = config.get('CON', name)
+        return conNo
+
 
 if __name__ == '__main__':
-    print('HTTP中的baseurl值为：', ReadConfig().get_http('baseurl'))
+    print('HTTP中的base_url值为：', ReadConfig().get_http('base_url'))

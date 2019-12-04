@@ -44,7 +44,8 @@
 #     runner.run(test_suite)
 #     # 执行测试套件
 # coding=utf-8
-import HTMLTestRunner
+# import HTMLTestRunner
+from HTMLTestRunner_PY3 import HTMLTestRunner_PY3
 import os
 import unittest
 import time
@@ -89,11 +90,11 @@ if __name__ == '__main__':
     report_path = "C:\\Users\\lp403\\PycharmProjects\\trgf\\Report\\" + now + "_result.html"
     print(report_path)
     fp = open(report_path, 'wb')
-    runner = HTMLTestRunner.HTMLTestRunner(stream=fp,
-                                           title=u"自动化测试用例",
-                                           description=u"用例执行情况",
-                                           verbosity=2
-                                           )
+    runner = HTMLTestRunner_PY3.HTMLTestRunner(stream=fp,
+                                               title=u"自动化测试用例",
+                                               description=u"用例执行情况",
+                                               verbosity=2
+                                               )
     # run 所有用例
     runner.run(get_allcase())
     # 关闭文件，记住用open()打开文件后一定要记得关闭它，否则会占用系统的可打开文件句柄数。
